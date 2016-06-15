@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [[ $# -eq 0 ]] ; then
-        COMMAND=sh
+        COMMAND=bash
 else
         COMMAND="$@"
 fi
