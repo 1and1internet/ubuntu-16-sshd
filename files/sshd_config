@@ -87,5 +87,5 @@ Subsystem sftp /usr/lib/openssh/sftp-server
 # PAM authentication, then enable this but set PasswordAuthentication
 # and ChallengeResponseAuthentication to 'no'.
 UsePAM yes
-
+UseDNS no
 ForceCommand /proxy_wrapper.sh $SSH_ORIGINAL_COMMAND
