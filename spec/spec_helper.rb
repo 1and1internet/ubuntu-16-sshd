@@ -13,8 +13,9 @@ RSpec.configure do |c|
   @image = Docker::Image.get(ENV['IMAGE'])
   set :backend, :docker
   set :docker_image, @image.id
+#  ENV => 
 #  set :docker_container_create_options, { 'User' => '100000', 'Hostname' => 'ubuntu_16', 'Env' => [ 'SUPERVISORD_EXIT_ON_FATAL=0' ] }
-  set :docker_container_create_options, { 'User' => '100000' }
+  set :docker_container_create_options, { 'User' => '100000', 'Env' => ['SUPERVISORD_LOGLEVEL=debug'] }
 
   describe "tests" do
     include_examples 'docker-ubuntu-16'
