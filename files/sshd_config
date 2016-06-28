@@ -88,4 +88,4 @@ Subsystem sftp /usr/lib/openssh/sftp-server
 # and ChallengeResponseAuthentication to 'no'.
 UsePAM yes
 UseDNS no
-ForceCommand /proxy_wrapper.sh $SSH_ORIGINAL_COMMAND
+ForceCommand /proxy_wrapper.sh
