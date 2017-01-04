@@ -8,7 +8,7 @@ LOCATOR=$USER
 # Project group is pg_<project-name>
 # SSH group (if present) is ssh_<group-name>
 PROJECT=$(groups $USER | sed -rn 's/.*\bpg_([^ \t]*)/\1/p')
-SSHGROUP=$(groups $USER | sed -rn 's/.*\bssh_([^ \t]*).*/\1/p')
+SSHGROUP=$(groups $USER | sed -rn 's/.*\b(ssh_[^ \t]*).*/\1/p')
 
 if [ ! -z $SSHGROUP ]; then
         LOCATOR=$SSHGROUP
