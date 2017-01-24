@@ -4,15 +4,13 @@
 set -f
 
 SSHENV=/sshenv
-LOCATOR=$USER
 # Project group is pg_<project-name>
 # SSH group (if present) is ssh_<group-name>
 PROJECT=$(groups $USER | sed -rn 's/.*\bpg_([^ \t]*).*/\1/p')
 SSHGROUP=$(groups $USER | sed -rn 's/.*\b(ssh_[^ \t]*).*/\1/p')
 
 if [ ! -z $SSHGROUP ]; then
-        LOCATOR=$SSHGROUP
-        SSHENV="$SSHENV -sshgroup"
+        SSHENV="$SSHENV -sshgroup $SSHGROUP"
 fi
 
 export OPENSHIFT_CA_CERT=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
@@ -24,7 +22,7 @@ if [[ -t 0 ]]; then
 fi
 
 if [ -z "$SSH_ORIGINAL_COMMAND" ]; then
-        $SSHENV -i $PROJECT $LOCATOR bash
+        $SSHENV -i $PROJECT $USER bash
 else
-        $SSHENV -i $PROJECT $LOCATOR bash -c "$SSH_ORIGINAL_COMMAND"
+        $SSHENV -i $PROJECT $USER bash -c "$SSH_ORIGINAL_COMMAND"
 fi  
