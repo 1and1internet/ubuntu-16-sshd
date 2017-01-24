@@ -3,24 +3,28 @@
 # Turn off wildcard expansion
 set -f
 
-USERNAME=$USER
+SSHENV=/sshenv
+LOCATOR=$USER
 # Project group is pg_<project-name>
-PROJECT=$(groups $USER | sed -r 's/.*\bpg_([^\s]*)/\1/')
+# SSH group (if present) is ssh_<group-name>
+PROJECT=$(groups $USER | sed -rn 's/.*\bpg_([^ \t]*).*/\1/p')
+SSHGROUP=$(groups $USER | sed -rn 's/.*\b(ssh_[^ \t]*).*/\1/p')
+
+if [ ! -z $SSHGROUP ]; then
+        LOCATOR=$SSHGROUP
+        SSHENV="$SSHENV -sshgroup"
+fi
 
 export OPENSHIFT_CA_CERT=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
 export OPENSHIFT_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
 export OPENSHIFT_URL="https://KUBERNETES_SERVICE_HOST:443"
 
-if [[ -t 0 ]]; then        
-        if [ -z "$SSH_ORIGINAL_COMMAND" ]; then
-	        /sshenv -i --tty $PROJECT $USERNAME bash
-        else
-                /sshenv -i --tty $PROJECT $USERNAME bash -c "$SSH_ORIGINAL_COMMAND"
-        fi
-else
-        if [ -z "$SSH_ORIGINAL_COMMAND" ]; then
-	        /sshenv -i $PROJECT $USERNAME bash
-        else
-                /sshenv -i $PROJECT $USERNAME bash -c "$SSH_ORIGINAL_COMMAND"
-        fi  
+if [[ -t 0 ]]; then
+        SSHENV="$SSHENV --tty"
 fi
+
+if [ -z "$SSH_ORIGINAL_COMMAND" ]; then
+        $SSHENV -i $PROJECT $LOCATOR bash
+else
+        $SSHENV -i $PROJECT $LOCATOR bash -c "$SSH_ORIGINAL_COMMAND"
+fi  
