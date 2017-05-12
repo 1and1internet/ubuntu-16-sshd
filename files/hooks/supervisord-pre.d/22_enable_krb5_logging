@@ -9,3 +9,8 @@ EOF
 if [ ! -d /var/log/debug ]; then
   mkdir /var/log/debug
 fi
+
+#Symlink sssd log to debug folder
+if [ ! -e /var/log/debug/sssd ]; then
+  ln -s /var/log/sssd /var/log/debug/sssd
+fi

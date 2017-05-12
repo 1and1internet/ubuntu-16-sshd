@@ -9,7 +9,7 @@ ENV DOMAIN="ENVVAR.DOMAIN" \
     DOMAIN_LOWER="envar.domain"
 RUN \
 apt-get update && apt-get -o Dpkg::Options::="--force-confold" install -y openssh-server freeipa-client rsyslog dnsutils && \
-mkdir --mode 700 /var/run/sshd && \
+mkdir --mode 700 /var/run/sshd /var/log/debug && \
 # SSH login fix. Otherwise user is kicked off after login
 sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd && \
 echo "export VISIBLE=now" >> /etc/profile && \
