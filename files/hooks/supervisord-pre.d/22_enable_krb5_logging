@@ -1,5 +1,11 @@
 #! /bin/bash
+# Add logging to kerberos
 cat << EOF >>/etc/krb5.conf
 [logging]
        kdc = FILE:/var/log/debug/krb5.log
 EOF
+
+#Make debug directory if it doesn't exist
+if [ ! -d /var/log/debug ]; then
+  mkdir /var/log/debug
+fi
