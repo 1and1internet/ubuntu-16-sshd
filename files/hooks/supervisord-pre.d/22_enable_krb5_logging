@@ -1,0 +1,5 @@
+#! /bin/bash
+cat << EOF >>/etc/krb5.conf
+[logging]
+       kdc = FILE:/var/log/debug/krb5.log
+EOF
